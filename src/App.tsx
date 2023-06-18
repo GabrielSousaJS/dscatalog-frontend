@@ -1,13 +1,9 @@
-import Home from './pages/Home';
 import './assets/styles/custom.scss';
 import './App.css';
+import RoutesApp from './Routes';
 
 function App() {
-  return (
-    <>
-      <Home />
-    </>
-  );
+  return <RoutesApp />;
 }
 
 export default App;
