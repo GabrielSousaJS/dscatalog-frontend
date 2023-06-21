@@ -3,12 +3,13 @@
 }
 
 .btn-container button {
+    width: calc(100% - 50px);
     border-radius: 10px 0 0 10px;
 }
 
 .btn h6 {
     color: #fff;
-    font-size: 12px;
+    font-size: 18px;
     text-transform: uppercase;
     margin: 10px;
 }
@@ -30,5 +31,10 @@
 
     .btn h6 {
         font-size: 18px;
+    }
+
+    .btn-container button {
+        width: calc(100% - 70px);
+        border-radius: 10px 0 0 10px;
     }
 }
