@@ -5,6 +5,7 @@ import { BrowserRouter } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import ProductDetails from './pages/ProductsDetails';
 import Admin from './pages/Admin';
+import Auth from './pages/Admin/Auth';
 
 const RoutesApp = () => {
   return (
@@ -21,6 +22,10 @@ const RoutesApp = () => {
             path="/admin/categories"
           />
           <Route element={<h1>Página de usuários</h1>} path="/admin/users" />
+        </Route>
+        <Route element={<Auth />} path="/admin/auth">
+          <Route element={<h1>Pagina de signup</h1>} path="/admin/auth/sigup"></Route>
+          <Route element={<h1>Pagina de recover</h1>} path="/admin/auth/recover"></Route>
         </Route>
       </Routes>
     </BrowserRouter>
