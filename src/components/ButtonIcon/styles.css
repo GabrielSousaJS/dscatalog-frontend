@@ -1,5 +1,6 @@
 .btn-container {
     display: flex;
+    width: 100%;
 }
 
 .btn-container button {
