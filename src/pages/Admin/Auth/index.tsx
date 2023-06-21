@@ -1,5 +1,7 @@
-import { Route, Routes } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 import { ReactComponent as AuthImage } from '../../../assets/images/auth-image.svg';
+
+import './styles.css';
 
 const Auth = () => {
     return (
@@ -10,6 +12,7 @@ const Auth = () => {
                 <AuthImage />
             </div>
             <div className="auth-form-container">
+                <Outlet />
             </div>
         </div>
     );
