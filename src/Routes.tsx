@@ -7,6 +7,7 @@ import ProductDetails from './pages/ProductsDetails';
 import Admin from './pages/Admin';
 import Auth from './pages/Admin/Auth';
 import Login from './pages/Admin/Auth/Login';
+import Users from './pages/Admin/User';
 
 const RoutesApp = () => {
   return (
@@ -24,7 +25,7 @@ const RoutesApp = () => {
             path="/admin/categories"
             element={<h1>Página de categories</h1>}
           />
-          <Route path="/admin/users" element={<h1>Página de users</h1>} />
+          <Route path="/admin/users" element={<Users />} />
         </Route>
 
         <Route element={<Auth />} path="/admin/auth">

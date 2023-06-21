@@ -10,7 +10,8 @@ type LoginResponse = {
   userId: number;
 };
 
-export const BASE_URL = process.env.REACT_APP_BACKEND_URL ?? 'http://localhost:8080';
+export const BASE_URL =
+  process.env.REACT_APP_BACKEND_URL ?? 'http://localhost:8080';
 
 const tokenKey = 'authData';
 
@@ -42,12 +43,22 @@ export const requestBackendLogin = (loginData: LoginData) => {
   return axios(params);
 };
 
+export const requestBackend = (config: AxiosRequestConfig) => {
+  const headers = config.withCredentials
+    ? {
+        ...config.headers,
+        Authorization: `Bearer ${getAuthData().access_token}`,
+      }
+    : config.headers;
+
+  return axios({ ...config, baseURL: BASE_URL, headers });
+};
+
 export const saveAuthData = (obj: LoginResponse) => {
-    localStorage.setItem(tokenKey, JSON.stringify(obj));
-}
+  localStorage.setItem(tokenKey, JSON.stringify(obj));
+};
 
 export const getAuthData = () => {
-    const str = localStorage.getItem(tokenKey) ?? "{}";
-    return JSON.parse(str) as LoginResponse;
-    
-}
+  const str = localStorage.getItem(tokenKey) ?? '{}';
+  return JSON.parse(str) as LoginResponse;
+};
