@@ -8,10 +8,12 @@ import Admin from './pages/Admin';
 import Auth from './pages/Admin/Auth';
 import Login from './pages/Admin/Auth/Login';
 import Users from './pages/Admin/User';
+import { unstable_HistoryRouter as HistoryRouter } from 'react-router-dom';
+import { history } from './util/history';
 
 const RoutesApp = () => {
   return (
-    <BrowserRouter>
+    <HistoryRouter history={history}>
       <Navbar />
       <Routes>
         <Route element={<Home />} path="/" />
@@ -27,7 +29,6 @@ const RoutesApp = () => {
           />
           <Route path="/admin/users" element={<Users />} />
         </Route>
-
         <Route element={<Auth />} path="/admin/auth">
           <Route element={<Navigate to="login" />} path="/admin/auth" />
 
@@ -42,7 +43,7 @@ const RoutesApp = () => {
           ></Route>
         </Route>
       </Routes>
-    </BrowserRouter>
+    </HistoryRouter>
   );
 };
 

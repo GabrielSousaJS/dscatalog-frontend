@@ -1,5 +1,6 @@
 import axios, { AxiosRequestConfig } from 'axios';
 import qs from 'qs';
+import jwtDecode from 'jwt-decode';
 
 type LoginResponse = {
   access_token: string;
@@ -9,6 +10,14 @@ type LoginResponse = {
   userFirstName: string;
   userId: number;
 };
+
+type Role = 'ROLE_OPERATOR' | 'ROLE_ADMIN';
+
+type TokenData = {
+  exp: number;
+  user_name: string;
+  authorities: Role[];
+}
 
 export const BASE_URL =
   process.env.REACT_APP_BACKEND_URL ?? 'http://localhost:8080';
@@ -62,3 +71,29 @@ export const getAuthData = () => {
   const str = localStorage.getItem(tokenKey) ?? '{}';
   return JSON.parse(str) as LoginResponse;
 };
+
+axios.interceptors.response.use(
+  function (response) {
+    return response;
+  },
+  function (error) {
+    if (error.response.status === 401 || error.response.status === 403) {
+      window.location.href = 'http://localhost:3000/admin/auth';
+    }
+    return Promise.reject(error);
+  }
+);
+
+export const getTokenData = () : TokenData | undefined => {
+  try {
+  return jwtDecode(getAuthData().access_token) as TokenData;
+  } catch (error) {
+    return undefined;
+  }
+}
+
+export const isAuthenticated = () : boolean => {
+  const tokenData = getTokenData();
+
+  return (tokenData && tokenData.exp * 1000 > Date.now()) ? true : false;
+}
