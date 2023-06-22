@@ -1,4 +1,4 @@
-import { Navigate, Route, Router, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import Home from './pages/Home';
 import Catalog from './pages/Catalog';
 import { BrowserRouter } from 'react-router-dom';
@@ -8,28 +8,25 @@ import Admin from './pages/Admin';
 import Auth from './pages/Admin/Auth';
 import Login from './pages/Admin/Auth/Login';
 import Users from './pages/Admin/User';
-import { unstable_HistoryRouter as HistoryRouter } from 'react-router-dom';
-import { history } from './util/history';
 import { PrivateRoute } from './components/PrivateRoute';
 
 const RoutesApp = () => {
   return (
-    <HistoryRouter history={history}>
+    <BrowserRouter>
       <Navbar />
       <Routes>
         <Route element={<Home />} path="/" />
         <Route element={<Catalog />} path="/products" />
         <Route element={<ProductDetails />} path="/products/:productId" />
 
-        <Route
-          path="/admin" element={ <PrivateRoute><Admin /></PrivateRoute>}>
+        <Route path="/admin" element={ <PrivateRoute><Admin /></PrivateRoute>}>
           <Route element={<Navigate to="products" />} path="/admin" />
           <Route path="/admin/products" element={<h1>Página de products</h1>} />
           <Route
             path="/admin/categories"
-            element={<h1>Página de categories</h1>}
+            element={ <PrivateRoute><h1>Página de categories</h1></PrivateRoute> }
           />
-          <Route path="/admin/users" element={<Users />} />
+          <Route path="/admin/users" element={ <PrivateRoute><Users /></PrivateRoute> } />
         </Route>
         <Route element={<Auth />} path="/admin/auth">
           <Route element={<Navigate to="login" />} path="/admin/auth" />
@@ -45,7 +42,7 @@ const RoutesApp = () => {
           ></Route>
         </Route>
       </Routes>
-    </HistoryRouter>
+    </BrowserRouter>
   );
 };
 
