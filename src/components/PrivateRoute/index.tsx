@@ -1,4 +1,4 @@
-import { Navigate } from "react-router-dom";
+import { Navigate, Route } from "react-router-dom";
 import { isAuthenticated } from "../../util/requests";
 
 type Props = {
