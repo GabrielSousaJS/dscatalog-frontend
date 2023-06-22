@@ -10,6 +10,7 @@ import Login from './pages/Admin/Auth/Login';
 import Users from './pages/Admin/User';
 import { unstable_HistoryRouter as HistoryRouter } from 'react-router-dom';
 import { history } from './util/history';
+import { PrivateRoute } from './components/PrivateRoute';
 
 const RoutesApp = () => {
   return (
@@ -20,7 +21,8 @@ const RoutesApp = () => {
         <Route element={<Catalog />} path="/products" />
         <Route element={<ProductDetails />} path="/products/:productId" />
 
-        <Route path="/admin" element={<Admin />}>
+        <Route
+          path="/admin" element={ <PrivateRoute><Admin /></PrivateRoute>}>
           <Route element={<Navigate to="products" />} path="/admin" />
           <Route path="/admin/products" element={<h1>Página de products</h1>} />
           <Route
