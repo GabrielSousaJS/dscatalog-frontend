@@ -1,14 +1,19 @@
-import { Navigate, Route } from "react-router-dom";
-import { isAuthenticated } from "../../util/requests";
+import { Navigate } from "react-router-dom";
+import { Role, hasAnyRoles, isAuthenticated } from "../../util/auth";
 
 type Props = {
     children: JSX.Element;
+    roles?: Role[]
 }
 
-export function PrivateRoute({children}: Props) {
+export function PrivateRoute({children, roles = []}: Props) {
     if (!isAuthenticated()) {
         return <Navigate to='/admin/auth/login'/>;
+    } else {
+        return !hasAnyRoles(roles) ? (
+            <Navigate to='/admin/products' />
+        ) : (
+            children
+        );
     }
-
-    return children;
-}
+};

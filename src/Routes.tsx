@@ -26,7 +26,7 @@ const RoutesApp = () => {
             path="/admin/categories"
             element={ <PrivateRoute><h1>Página de categories</h1></PrivateRoute> }
           />
-          <Route path="/admin/users" element={ <PrivateRoute><Users /></PrivateRoute> } />
+          <Route path="/admin/users" element={ <PrivateRoute roles={['ROLE_ADMIN']}><Users /></PrivateRoute> } />
         </Route>
         <Route element={<Auth />} path="/admin/auth">
           <Route element={<Navigate to="login" />} path="/admin/auth" />
