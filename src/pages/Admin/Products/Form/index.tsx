@@ -27,7 +27,7 @@ const Form = () => {
       withCredentials: true,
     };
 
-    requestBackend(config).then((response) => console.log(response.data));
+    requestBackend(config).then((response) => navigate('/admin/products'));
   };
 
   const handleCancel = () => {
