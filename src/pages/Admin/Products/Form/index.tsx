@@ -4,7 +4,9 @@ import './styles.css';
 import { requestBackend } from '../../../../util/requests';
 import { AxiosRequestConfig } from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import Select from 'react-select';
+import { Category } from '../../../../types/category';
 
 type UrlParams = {
   productId: string;
@@ -17,12 +19,22 @@ const Form = () => {
 
   const navigate = useNavigate();
 
+  const [selectCategories, setSelectCategories] = useState<Array<Category>>([]);
+
   const {
     register,
     handleSubmit,
     formState: { errors },
     setValue,
   } = useForm<Product>();
+
+  useEffect(() => {
+    requestBackend({
+      url: '/categories',
+    }).then((response) => {
+      setSelectCategories(response.data.content);
+    });
+  }, []);
 
   useEffect(() => {
     if (isEditing) {
@@ -85,6 +97,18 @@ const Form = () => {
                   {errors.name?.message}
                 </div>
               </div>
+
+              <div className="margin-bottom-30">
+                <Select
+                  options={selectCategories}
+                  classNamePrefix="product-crud-select"
+                  isMulti
+                  placeholder="Categorias"
+                  getOptionLabel={(category: Category) => category.name}
+                  getOptionValue={(category: Category) => String(category.id)}
+                />
+              </div>
+
               <div className="margin-bottom-30">
                 <input
                   {...register('price', {
