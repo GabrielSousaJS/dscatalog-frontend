@@ -3,9 +3,17 @@ import { Product } from '../../../../types/product';
 import './styles.css';
 import { requestBackend } from '../../../../util/requests';
 import { AxiosRequestConfig } from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useEffect } from 'react';
+
+type UrlParams = {
+  productId: string;
+};
 
 const Form = () => {
+  const { productId } = useParams<UrlParams>();
+
+  const isEditing = productId !== 'create';
 
   const navigate = useNavigate();
 
@@ -13,16 +21,35 @@ const Form = () => {
     register,
     handleSubmit,
     formState: { errors },
+    setValue,
   } = useForm<Product>();
 
-  
+  useEffect(() => {
+    if (isEditing) {
+      requestBackend({ url: `/products/${productId}` }).then((response) => {
+        const product = response.data as Product;
+
+        setValue('name', product.name);
+        setValue('price', product.price);
+        setValue('description', product.description);
+        setValue('imgUrl', product.imgUrl);
+        setValue('categories', product.categories);
+      });
+    }
+  }, [isEditing, productId, setValue]);
 
   const onSubmit = (formData: Product) => {
-    const data = {...formData, imgUrl: 'https://raw.githubusercontent.com/devsuperior/dscatalog-resources/master/backend/img/1-big.jpg', categories: [{id: 1, name: 'teste'}]}
+    const data = {
+      ...formData,
+      imgUrl: isEditing
+        ? formData.imgUrl
+        : 'https://raw.githubusercontent.com/devsuperior/dscatalog-resources/master/backend/img/1-big.jpg',
+      categories: isEditing ? formData.categories : [{ id: 1, name: 'teste' }],
+    };
 
     const config: AxiosRequestConfig = {
-      method: 'POST',
-      url: '/products',
+      method: isEditing ? 'PUT' : 'POST',
+      url: isEditing ? `/products/${productId}` : '/products',
       data,
       withCredentials: true,
     };
@@ -32,7 +59,7 @@ const Form = () => {
 
   const handleCancel = () => {
     navigate('/admin/products');
-  }
+  };
 
   return (
     <div className="">
@@ -89,7 +116,7 @@ const Form = () => {
                   placeholder="Descrição"
                   name="description"
                 />
-                <div className='invalid-feedback d-block'>
+                <div className="invalid-feedback d-block">
                   {errors.description?.message}
                 </div>
               </div>
@@ -97,8 +124,10 @@ const Form = () => {
           </div>
 
           <div className="product-crud-buttons-container">
-            <button className="btn btn-outline-danger product-crud-button"
-            onClick={handleCancel}>
+            <button
+              className="btn btn-outline-danger product-crud-button"
+              onClick={handleCancel}
+            >
               CANCELAR
             </button>
             <button className="btn btn-primary product-crud-button text-white">
