@@ -7,8 +7,11 @@ import ProductDetails from './pages/ProductsDetails';
 import Admin from './pages/Admin';
 import Auth from './pages/Admin/Auth';
 import Login from './pages/Admin/Auth/Login';
-import Users from './pages/Admin/User';
+import Users from './pages/Admin/Users';
 import { PrivateRoute } from './components/PrivateRoute';
+import Products from './pages/Admin/Products';
+import List from './pages/Admin/Products/List';
+import Form from './pages/Admin/Products/Form';
 
 const RoutesApp = () => {
   return (
@@ -19,18 +22,39 @@ const RoutesApp = () => {
         <Route element={<Catalog />} path="/products" />
         <Route element={<ProductDetails />} path="/products/:productId" />
 
-        <Route path="/admin" element={ <PrivateRoute><Admin /></PrivateRoute>}>
+        <Route
+          path="/admin"
+          element={
+            <PrivateRoute>
+              <Admin />
+            </PrivateRoute>
+          }
+        >
           <Route element={<Navigate to="products" />} path="/admin" />
-          <Route path="/admin/products" element={<h1>Página de products</h1>} />
+          <Route path="/admin/products" element={<Products />}>
+            <Route element={ <List />} path='/admin/products' />
+            <Route path='/admin/products' element={<List />}></Route>
+            <Route path='/admin/products/:productId' element={<Form />}></Route>
+          </Route>
           <Route
             path="/admin/categories"
-            element={ <PrivateRoute><h1>Página de categories</h1></PrivateRoute> }
+            element={
+              <PrivateRoute>
+                <h1>Página de categories</h1>
+              </PrivateRoute>
+            }
           />
-          <Route path="/admin/users" element={ <PrivateRoute roles={['ROLE_ADMIN']}><Users /></PrivateRoute> } />
+          <Route
+            path="/admin/users"
+            element={
+              <PrivateRoute roles={['ROLE_ADMIN']}>
+                <Users />
+              </PrivateRoute>
+            }
+          />
         </Route>
         <Route element={<Auth />} path="/admin/auth">
           <Route element={<Navigate to="login" />} path="/admin/auth" />
-
           <Route element={<Login />} path="/admin/auth/login" />
           <Route
             element={<h1>Pagina de signup</h1>}
